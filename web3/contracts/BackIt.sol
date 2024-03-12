@@ -14,7 +14,7 @@ contract BackIt {
         uint256[] donations;
     }
 
-    mapping(uint256 => Campaign) public campaigns;  //TO MAP THROUGH Campaign structure => Campaign[0]
+    mapping(uint256 => Campaign) public campaigns;  //TO create MAP for campaign structure => Campaign[0]
 
     uint256 public numberOfCampaigns = 0;   //keeping track of no. of campaign inorder to give them Ids
 
@@ -43,8 +43,17 @@ contract BackIt {
         return numberOfCampaigns - 1; //index of the most newly created campaign
     }
 
-    function donateToCampaign() {
-        
+    function donateToCampaign(uint256 _id) public payable { //payable -> keyword to denote crypto transaction -> returns two values
+        uint256 amount = msg.value; //coming from frontend
+
+        Campaign storage campaign = campaigns[_id];
+        campaign.donaters.push(msg.sender); //pushing the address of the sender
+        campaign.donations.push(amount);
+
+        (bool sent,) = payable(campaign.owner).call{value: amount}("");  //to verify if transaction is successful or not
+        if(sent){
+            campaign.amountCollected = campaign.amountCollected + amount;
+        }
     }
 
     function getDonators() {
