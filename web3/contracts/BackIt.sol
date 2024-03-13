@@ -60,7 +60,14 @@ contract BackIt {
         return (campaigns[_id].donaters, campaigns[_id].donations);
     }
 
-    function getCampaigns() {
+    function getCampaigns() view public returns(Campaign[] memory){
+        Campaign[] memory allCampaigns = new Campaign[](numberOfCampaigns); //Creating a variable of type array of multiple structures of size number of campaigns
         
+        for(uint i = 0; i < numberOfCampaigns; i++){
+            Campaign storage item = campaigns[i];   //Accessing ith campaign from storage
+            allCampaigns[i] = item; //storing item at ith position in allCampaigns
+        }
+        
+        return allCampaigns;
     }
 }
