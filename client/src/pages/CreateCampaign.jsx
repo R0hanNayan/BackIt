@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ethers } from 'ethers';  //utility library to interact with utility library
 import { money } from '../assets';
@@ -12,15 +12,21 @@ const CreateCampaign = () => {
   //Details required to create a campaign
   const [form, setForm] = useState({
     name: '',
-    title:'',
-    description:'',
-    target:'',
-    deadline:'',
-    image:''
+    title: '',
+    description: '',
+    target: '',
+    deadline: '',
+    image: ''
   });
 
-  const handleSubmit = () => {
+  //to update every field
+  const handleFormFieldChange = (fieldName, e) => {
+    setForm({ ...form, [fieldName]: e.target.value });
+  }
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(form);
   }
 
   return (
@@ -32,27 +38,27 @@ const CreateCampaign = () => {
 
       <form onSubmit={handleSubmit} className='w-full mt-[65px] flex flex-col gap-[30px]'>
         <div className='flex flex-wrap gap-[40px]'>
-          <FormField 
-            lableName="Your Name *"
+          <FormField
+            labelName="Your Name *"
             placeholder="John Doe"
             inputType="text"
             value={form.name}
-            handleChange={()=>{}}
+            handleChange={(e) => handleFormFieldChange('name', e)}
           />
-          <FormField 
-            lableName="Campaign Title *"
+          <FormField
+            labelName="Campaign Title *"
             placeholder="Write a title"
             inputType="text"
             value={form.title}
-            handleChange={()=>{}}
+            handleChange={(e) => handleFormFieldChange('title', e)}
           />
         </div>
-        <FormField 
-            lableName="Story *"
-            placeholder="Write your story"
-            isTextArea
-            value={form.description}
-            handleChange={()=>{}}
+        <FormField
+          labelName="Story *"
+          placeholder="Write your story"
+          isTextArea
+          value={form.description}
+          handleChange={(e) => handleFormFieldChange('description', e)}
         />
 
         <div className='w-full flex justify-start items-center p-4 bg-[#8c6dfd] h-[120px] rounded-[10px]'>
@@ -61,28 +67,35 @@ const CreateCampaign = () => {
         </div>
 
         <div className='flex flex-wrap gap-[40px]'>
-          <FormField 
-            lableName="Goal *"
+          <FormField
+            labelName="Goal *"
             placeholder="ETH 0.50"
             inputType="text"
             value={form.target}
-            handleChange={()=>{}}
+            handleChange={(e) => handleFormFieldChange('target', e)}
           />
-          <FormField 
-            lableName="End Date *"
+          <FormField
+            labelName="End Date *"
             placeholder="End Date"
             inputType="date"
             value={form.deadline}
-            handleChange={()=>{}}
+            handleChange={(e) => handleFormFieldChange('deadline', e)}
           />
+        </div>
+        <FormField
+          labelName="Campaign Image *"
+          placeholder="Place image URL of your campaign"
+          inputType="url"
+          value={form.image}
+          handleChange={(e) => handleFormFieldChange('image', e)}
+        />
 
-          <div className='flex justify-center items-center mt-[40px]'>
-            <CustomButton 
-              btnType="submit"
-              title="Submit new Campaign"
-              styles="bg-[#1dc071]"
-            />
-          </div>
+        <div className='flex justify-center items-center mt-[40px]'>
+          <CustomButton
+            btnType="submit"
+            title="Submit new Campaign"
+            styles="bg-[#1dc071]"
+          />
         </div>
       </form>
     </div>
