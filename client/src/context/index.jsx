@@ -7,23 +7,24 @@ import { contractAbi } from '../constants';
 const StateContext = createContext();
 
 export const StateContextProvider = ({ children }) => {
-    const { contract } = useContract("0xE964B57398b6Fd8a57aC01693E9D0446aD5fB1A4", contractAbi)
-    //To use write function of the smart contract
-    const { mutateAsync : createCampaign } = useContractWrite(contract, 'createCampaign');
+    const { contract } = useContract("0xE964B57398b6Fd8a57aC01693E9D0446aD5fB1A4", contractAbi);
+    const { mutateAsync: createCampaign } = useContractWrite(contract, "createCampaign")
     const address = useAddress();
     const connect = useMetamask();  //to connect wallet
+    console.log(address);
 
     const publishCampaign = async (form) =>{
         try {
-            const data = await createCampaign([
-                address, //owner
-                form.title, //title of campaign
-                form.description, //description
-                form.target, 
-                new Date(form.deadline).getTime(),
-                form.image
-            ]);
-
+            const data = await createCampaign({
+				args: [
+					address, // owner
+					form.title, // title
+					form.description, // description
+					form.target,
+					Math.round(new Date(form.deadline).getTime()), // deadline,
+					form.image,
+				]
+			});
             console.log("Contract call success", data);
         } catch (error) {
             console.log("Contract call failed", error);
@@ -35,6 +36,7 @@ export const StateContextProvider = ({ children }) => {
             value={{
                 address,
                 contract,
+                connect,
                 createCampaign : publishCampaign
             }}
         >
