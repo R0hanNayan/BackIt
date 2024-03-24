@@ -7,10 +7,12 @@ import { StateContextProvider } from './context';
 import App from './App';
 import './index.css';
 
+const clientID = import.meta.env.VITE_CLIENT_ID;
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-  <ThirdwebProvider activeChain={Sepolia} clientId={"15b5e5dc32b31dbde4f713ad7c090c4c"}> 
+  <ThirdwebProvider activeChain={Sepolia} clientId={clientID}> 
     <Router>
       <StateContextProvider>
         <App />
